@@ -1,0 +1,20 @@
+name: Build report with pandoc
+
+on: [ push, pull_request, workflow_dispatch ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build report
+        uses: docker://pandoc/latex:3.5
+        with:
+          args: >-
+            -s report.md
+            -o report.pdf
+      - name: Upload report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: report
+          path: report.pdf
